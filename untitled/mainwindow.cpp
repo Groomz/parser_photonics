@@ -68,16 +68,12 @@ MainWindow::MainWindow(QWidget *parent) :
     options.clear();
     ui->comboBox_FlowControl->setCurrentText("No Control");
 
-
     on_action_triggered();
-
 
     serial = new QSerialPort();  // Создать новый объект класса "SerialPort"
 
     connect(this, SIGNAL(response(QString)),
             this, SLOT(get_response(QString))); // Подключить сигнал получения ответа к слоту
-
-
 
     ui->lineEdit_separator->setText("d");
     ui->lineEdit_Format->setText("d:d:d:d$");
@@ -103,9 +99,7 @@ void MainWindow::on_action_triggered()
     {
         ui->comboBox_PortName->addItem(info.portName());
     }
-
    // ui->lineEdit_Response->setText("Clicked!");
-
     return;
 }
 
@@ -126,12 +120,9 @@ void MainWindow::on_pushButton_Format_clicked()
     ui->lineEdit_Data->setDisabled(true);
     ui->pushButton_Cycle->setDisabled(false);
 
-//    SepList.removeLast();
-
     QString start = "1";
     serial->write(start.toLocal8Bit());
     timer.start();
-
 
     pfile.setFileName(ui->lineEdit_Data->text());
     pfile.open(QIODevice::Append  | QIODevice::Text);
@@ -150,12 +141,12 @@ void MainWindow::on_pushButton_Data_clicked()
 
     this->firstWaitTime = 5000;
 
-    if (serial->waitForReadyRead(this->firstWaitTime)) { // Если за данное число миллисекунд что-то пришло
+    if (serial->waitForReadyRead(this->firstWaitTime)) 
+    { // Если за данное число миллисекунд что-то пришло
         array = serial->readAll(); // Прочитать полученные данные
         while (serial->waitForReadyRead(this->additionalWaitTime)) // Если пришло что-то ещё
             array += serial->readAll(); // Дописать новые данные
         recived = QString(array); // Преобразовать полученные данные в строку
-
        // ui->lineEditTTR->setText(QString::number(time.elapsed()-this->additionalWaitTime)); // Записать время отклика
     }
 
@@ -171,10 +162,7 @@ void MainWindow::on_pushButton_Data_clicked()
          DataListFirst.removeLast();
     }
 
-   // int count = 0;
-
     int ColourStep = 256/SepList.size()-1;
-
     for (int i = 0; i < SepList.size(); i++)
     {
          ui->CustomPlot->addGraph();
@@ -185,21 +173,17 @@ void MainWindow::on_pushButton_Data_clicked()
     QString s;
     QTextStream stream(&pfile);
 
-
     for (int i = 0; i < DataListFirst.size(); i++)
     {
 
         s += DataListFirst[i] + "     " + QString::number(timer.elapsed()/1000.0) + "\n";
 
-
         for (int j = 0; j < SepList.size(); j++)
         {
            QStringList DataListSecond = DataListFirst[i].split(SepList[j], QString::SkipEmptyParts, Qt::CaseInsensitive);
-
            ui->textEdit_Result->append(DataListSecond[0]);
 
            double temp = DataListSecond[0].toDouble();
-
            ++count;
 
            DataVector.append(temp);
@@ -207,17 +191,12 @@ void MainWindow::on_pushButton_Data_clicked()
            TimerVector.append(timer.elapsed()/1000.0);
 
            DataListSecond.removeFirst();
-
            DataListFirst[i] = DataListSecond.join(SepList[j]);
-
         }
     }
 
     stream << s;
     pfile.close();
-
-
-  //  QVector<QVector<double>> Graphs;
 
     for(int i = 0; i < SepList.size(); i++)
     {
@@ -250,16 +229,9 @@ void MainWindow::on_pushButton_Connect_clicked()
     ui->lineEdit_Data->setDisabled(false);
     ui->pushButton_update->setDisabled(!false);
 
-
-
     if (ui->pushButton_Connect->text() == "Connect")
     {
-
-//здесь еще не падал
-
         serial->setPortName(ui->comboBox_PortName->currentText());
-
-//здесь упал
 
 //        if(ui->comboBox_BaudRate->currentText() == "600")
 //            serial->setBaudRate(QSerialPort::Baud600);
@@ -280,15 +252,12 @@ void MainWindow::on_pushButton_Connect_clicked()
         if(ui->comboBox_BaudRate->currentText() == "115200")
             serial->setBaudRate(QSerialPort::Baud115200);
 
-
-
         if(ui->comboBox_FlowControl->currentText() == "No")
             serial->setFlowControl(QSerialPort::NoFlowControl);
         if(ui->comboBox_FlowControl->currentText() == "Software")
             serial->setFlowControl(QSerialPort::SoftwareControl);
         if(ui->comboBox_FlowControl->currentText() == "Hardware")
             serial->setFlowControl(QSerialPort::HardwareControl);
-
 
         if(ui->comboBox_DataBits->currentText() == "5")
             serial->setDataBits(QSerialPort::Data5);
@@ -317,26 +286,21 @@ void MainWindow::on_pushButton_Connect_clicked()
         if(ui->comboBox_StopBit->currentText() == "2")
             serial->setStopBits(QSerialPort::TwoStop);
 
-// сюда уже не дошел
-
-
         if (!serial->open(QIODevice::ReadWrite))
         {
             QSerialPort::SerialPortError getError = QSerialPort::NoError;
             serial->error(getError);
-
     //        emit response(tr("Can't open %1, error code %2").arg(ui->comboBox_PortName->currentText()).arg(serial.error()));
-
             return;
         }
 
         ui->pushButton_Connect->setText("Disconnect");
-    } else
+    } 
+    else
         {
             serial->close();
 
             ui->pushButton_Connect->setText("Connect");
-
             IsCycle = false;
 
             ui->lineEdit_separator->setEnabled(!true);
@@ -365,7 +329,6 @@ void MainWindow::on_pushButton_Cycle_clicked()
     {
         on_pushButton_Data_clicked();
         QTest::qWait(15);
-
     }
     ui->pushButton_Cycle->setText("Start");
 }
@@ -386,8 +349,6 @@ void MainWindow::on_pushButton_update_clicked()
     {
         ui->comboBox_PortName->addItem(info.portName());
     }
-
-   // ui->lineEdit_Response->setText("Clicked!");
 
     return;
 }
