@@ -90,7 +90,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_action_triggered()
 {
     ui->comboBox_PortName->clear();
@@ -102,8 +101,6 @@ void MainWindow::on_action_triggered()
    // ui->lineEdit_Response->setText("Clicked!");
     return;
 }
-
-
 
 
 void MainWindow::on_pushButton_Format_clicked()
@@ -311,7 +308,6 @@ void MainWindow::on_pushButton_Connect_clicked()
         }
 }
 
-
 void MainWindow::on_pushButton_Cycle_clicked()
 {
     if(IsCycle == false)
@@ -349,6 +345,5 @@ void MainWindow::on_pushButton_update_clicked()
     {
         ui->comboBox_PortName->addItem(info.portName());
     }
-
     return;
 }
