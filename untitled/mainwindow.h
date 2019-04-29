@@ -24,7 +24,7 @@ private:
     int additionalWaitTime = 10; // Дополнительное время ожидания новых данных, мс
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     QStringList SepList;
